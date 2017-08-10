@@ -95,7 +95,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
         {
             var trimedText = text.Trim().ToLowerInvariant();
             var swift = 0;
-            if (trimedText.StartsWith("next"))
+            if (trimedText.StartsWith("next") || trimedText.StartsWith("upcoming"))
             {
                 swift = 1;
             }
@@ -110,7 +110,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
         {
             var trimedText = text.Trim().ToLowerInvariant();
             var swift = 0;
-            if (trimedText.StartsWith("next"))
+            if (trimedText.StartsWith("next") || trimedText.StartsWith("upcoming"))
             {
                 swift = 1;
             }

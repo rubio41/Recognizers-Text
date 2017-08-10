@@ -83,7 +83,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         public static readonly Regex OneWordPeriodRegex =
             new Regex(
-                @"\b(((next|this|last)\s+)?(?<month>April|Apr|August|Aug|December|Dec|February|Feb|January|Jan|July|Jul|June|Jun|March|Mar|May|November|Nov|October|Oct|September|Sep|Sept)|(next|last|this)\s+(weekend|week|month|year)|weekend|(month|year) to date)\b",
+                @"\b(((next|upcoming|this|last)\s+)?(?<month>April|Apr|August|Aug|December|Dec|February|Feb|January|Jan|July|Jul|June|Jun|March|Mar|May|November|Nov|October|Oct|September|Sep|Sept)|(next|upcoming|last|this)\s+(weekend|week|month|year)|weekend|(month|year) to date)\b",
                 RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex MonthNumWithYear =

@@ -30,13 +30,13 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         public static readonly Regex PureNumFromTo =
             new Regex(
-                string.Format(@"(from\s+)?({0}|{1})(\s*{5})?\s*{2}\s*({0}|{1})\s*({3}|{4}|{5})?", HourRegex,
+                string.Format(@"(from\s+)?({0}|{1})(\s*(?<left_desc>{5}))?\s*{2}\s*({0}|{1})\s*(?<right_desc>{3}|{4}|{5})?", HourRegex,
                     HourNumRegex, TillRegex, PmRegex, AmRegex, DescRegex),
                 RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex PureNumBetweenAnd =
             new Regex(
-                string.Format(@"(between\s+)({0}|{1})(\s*{5})?\s*{2}\s*({0}|{1})\s*({3}|{4}|{5})?", HourRegex,
+                string.Format(@"(between\s+)({0}|{1})(\s*(?<left_desc>{5}))?\s*{2}\s*({0}|{1})\s*(?<right_desc>{3}|{4}|{5})?", HourRegex,
                     HourNumRegex, "and", PmRegex, AmRegex, DescRegex), RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex PrepositionRegex = new Regex(@"(?<prep>^(at|on|of)(\s+the)?$)",
