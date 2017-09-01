@@ -77,6 +77,10 @@ namespace Microsoft.Recognizers.Text.DateTime.English.Tests
                 new DateObject(year, month, day, 16, min, second),
                 new DateObject(year, month, day, 17, min, second));
 
+            BasicTest("I'll be out 4 til 5pm",
+                new DateObject(year, month, day, 16, min, second),
+                new DateObject(year, month, day, 17, min, second));
+
             BasicTest("I'll be out 4:00 to 7 oclock",
                 new DateObject(year, month, day, 4, min, second),
                 new DateObject(year, month, day, 7, min, second));
@@ -170,6 +174,8 @@ namespace Microsoft.Recognizers.Text.DateTime.English.Tests
 
             // merge two time points
             BasicTest("I'll be out 4pm till 5pm", "(T16,T17,PT1H)");
+
+            BasicTest("I'll be out 4 til 5pm", "(T16,T17,PT1H)");
 
             BasicTest("I'll be out 4:00 to 7 oclock", "(T04:00,T07,PT3H)");
 

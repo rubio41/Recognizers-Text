@@ -60,7 +60,8 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         public static readonly Regex StrictWeekDay =
             new Regex(
-                DateTimeDefinitions.StrictWeekDay,
+                //DateTimeDefinitions.StrictWeekDay,
+                DateTimeDefinitions.WeekDayRegex,
                 RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex WeekDayOfMonthRegex =

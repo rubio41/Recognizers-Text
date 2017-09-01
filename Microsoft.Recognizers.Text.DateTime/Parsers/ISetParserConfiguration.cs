@@ -43,6 +43,8 @@ namespace Microsoft.Recognizers.Text.DateTime
 
         Regex EachDayRegex { get; }
 
+        Regex StrictWeekDayRegex { get; }
+
         bool GetMatchedDailyTimex(string text, out string timex);
 
         bool GetMatchedUnitTimex(string text, out string timex);

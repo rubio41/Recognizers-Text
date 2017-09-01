@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DateObject = System.DateTime;
 
 namespace Microsoft.Recognizers.Text.DateTime
@@ -50,6 +51,12 @@ namespace Microsoft.Recognizers.Text.DateTime
                 if (!innerResult.Success)
                 {
                     innerResult = ParseEach(config.TimePeriodExtractor, config.TimePeriodParser, er.Text);
+
+                    var anotherRes = ParseEach(config.TimeExtractor, config.TimeParser, er.Text);
+                    if (anotherRes.Success)
+                    {
+                        innerResult.Success = false;
+                    }
                 }
 
                 if (!innerResult.Success)
@@ -189,15 +196,34 @@ namespace Microsoft.Recognizers.Text.DateTime
         private DateTimeResolutionResult ParseEach(IExtractor extractor, IDateTimeParser parser, string text)
         {
             var ret = new DateTimeResolutionResult();
-            var ers = extractor.Extract(text);
-            if (ers.Count != 1)
+            List<ExtractResult> ers = null;
+            // remove key words of set type from text
+            var match = this.config.EachPrefixRegex.Match(text);
+            var success = false;
+            if (match.Success)
             {
-                return ret;
+                var trimedText = text.Remove(match.Index, match.Length);
+                ers = extractor.Extract(trimedText);
+                if (ers.Count >= 1)
+                {
+                    success = true;
+                }
             }
 
-            var beforeStr = text.Substring(0, ers[0].Start ?? 0);
-            var match = this.config.EachPrefixRegex.Match(beforeStr);
+            // remove suffix 's' and "on" if existed and re-try
+            match = this.config.StrictWeekDayRegex.Match(text);
             if (match.Success)
+            {
+                var trimedText = text.Remove(match.Index, match.Length);
+                trimedText = trimedText.Insert(match.Index, match.Groups["weekday"].ToString());
+                ers = extractor.Extract(trimedText);
+                if (ers.Count >= 1)
+                {
+                    success = true;
+                }
+            }
+
+            if (success)
             {
                 var pr = parser.Parse(ers[0], DateObject.Now);
                 ret.Timex = pr.TimexStr;

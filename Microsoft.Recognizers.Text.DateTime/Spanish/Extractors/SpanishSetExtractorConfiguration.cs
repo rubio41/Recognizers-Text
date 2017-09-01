@@ -17,7 +17,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex EachPrefixRegex = new Regex(
-            $@"(?<each>({EachExpression})\s*$)",
+            $@"(?<each>({EachExpression})\s*)",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex EachDayRegex = new Regex(
@@ -26,6 +26,11 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
 
         public static readonly Regex BeforeEachDayRegex = new Regex(
             $@"({EachExpression})\s*d[ií]as(\s+a\s+las?)?\s*\b",
+            RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        //TODO: write the below regex according to the corresponding one of English
+        public static readonly Regex StrictWeekDayRegex = new Regex(
+            $@"^[\.]",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public SpanishSetExtractorConfiguration()
@@ -64,5 +69,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
         Regex ISetExtractorConfiguration.EachDayRegex => EachDayRegex;
 
         Regex ISetExtractorConfiguration.BeforeEachDayRegex => BeforeEachDayRegex;
+
+        Regex ISetExtractorConfiguration.StrictWeekDayRegex => StrictWeekDayRegex;
     }
 }

@@ -40,6 +40,12 @@ namespace Microsoft.Recognizers.Text.DateTime.English.Tests
             BasicTest("I'll leave each monday 4pm", "Set: XXXX-WXX-1T16", "XXXX-WXX-1T16");
 
             BasicTest("I'll leave every morning", "Set: TMO", "TMO");
+
+            BasicTest("I'll leave every morning at 9am", "Set: T09", "T09");
+            BasicTest("I'll leave at 9am every Sunday", "Set: XXXX-WXX-7T09", "XXXX-WXX-7T09");
+            BasicTest("I'll leave at 9am on Sundays", "Set: XXXX-WXX-7T09", "XXXX-WXX-7T09");
+            BasicTest("I'll leave at 9am Sundays", "Set: XXXX-WXX-7T09", "XXXX-WXX-7T09");
+            BasicTest("I'll leave on Sundays", "Set: XXXX-WXX-7", "XXXX-WXX-7");
         }
     }
 }
