@@ -14,7 +14,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English.Tests
             Assert.AreEqual(1, er.Count);
             var pr = parser.Parse(er[0], System.DateTime.Now);
             Assert.AreEqual(Constants.SYS_DATETIME_SET, pr.Type);
-            Assert.AreEqual(value, ((DateTimeResolutionResult) pr.Value).FutureValue);
+            Assert.AreEqual(value, ((DateTimeResolutionResult)pr.Value).FutureValue);
             Assert.AreEqual(luisValue, pr.TimexStr);
         }
 
@@ -40,6 +40,33 @@ namespace Microsoft.Recognizers.Text.DateTime.English.Tests
             BasicTest("I'll leave each monday 4pm", "Set: XXXX-WXX-1T16", "XXXX-WXX-1T16");
 
             BasicTest("I'll leave every morning", "Set: TMO", "TMO");
+        }
+
+        [TestMethod]
+        public void TestSetParseTimePeriod_Time()
+        {
+            BasicTest("I'll leave every morning at 9am", "Set: T09", "T09");
+            BasicTest("I'll leave every afternoon at 4pm", "Set: T16", "T16");
+            BasicTest("I'll leave every night at 9pm", "Set: T21", "T21");
+            BasicTest("I'll leave every night at 9", "Set: T21", "T21");
+            BasicTest("I'll leave mornings at 9am", "Set: T09", "T09");
+            BasicTest("I'll leave on mornings at 9", "Set: T09", "T09");
+        }
+
+        [TestMethod]
+        public void TestSetExtractMergeDate_Time()
+        {
+            BasicTest("I'll leave at 9am every Sunday", "Set: XXXX-WXX-7T09", "XXXX-WXX-7T09");
+            BasicTest("I'll leave at 9am on Sundays", "Set: XXXX-WXX-7T09", "XXXX-WXX-7T09");
+            BasicTest("I'll leave at 9am Sundays", "Set: XXXX-WXX-7T09", "XXXX-WXX-7T09");
+        }
+
+        [TestMethod]
+        public void TestSetExtractDate()
+        {
+            BasicTest("I'll leave on Mondays", "Set: XXXX-WXX-1", "XXXX-WXX-1");
+            BasicTest("I'll leave on Sundays", "Set: XXXX-WXX-7", "XXXX-WXX-7");
+            BasicTest("I'll leave Sundays", "Set: XXXX-WXX-7", "XXXX-WXX-7");
         }
     }
 }

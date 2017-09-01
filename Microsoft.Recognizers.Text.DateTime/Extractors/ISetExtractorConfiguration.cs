@@ -16,6 +16,8 @@ namespace Microsoft.Recognizers.Text.DateTime
 
         Regex BeforeEachDayRegex { get; }
 
+        Regex StrictWeekDayRegex { get; }
+
         IExtractor DurationExtractor { get; }
 
         IExtractor TimeExtractor { get; }
