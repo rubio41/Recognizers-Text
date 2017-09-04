@@ -212,7 +212,7 @@ namespace Microsoft.Recognizers.Text.DateTime
             }
 
             // remove suffix 's' and "on" if existed and re-try
-            match = this.config.StrictWeekDayRegex.Match(text);
+            match = this.config.SetWeekDayRegex.Match(text);
             if (match.Success)
             {
                 var trimedText = text.Remove(match.Index, match.Length);

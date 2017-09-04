@@ -29,7 +29,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         //TODO: write the below regex according to the corresponding one of English
-        public static readonly Regex StrictWeekDayRegex = new Regex(
+        public static readonly Regex SetWeekDayRegex = new Regex(
             $@"^[\.]",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
@@ -70,6 +70,6 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
 
         Regex ISetExtractorConfiguration.BeforeEachDayRegex => BeforeEachDayRegex;
 
-        Regex ISetExtractorConfiguration.StrictWeekDayRegex => StrictWeekDayRegex;
+        Regex ISetExtractorConfiguration.SetWeekDayRegex => SetWeekDayRegex;
     }
 }

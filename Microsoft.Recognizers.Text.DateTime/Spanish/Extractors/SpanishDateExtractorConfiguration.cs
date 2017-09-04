@@ -27,9 +27,10 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
         public static readonly Regex YearRegex = new Regex(@"(?<year>19\d{2}|20\d{2}|9\d|0\d|1\d|2\d)",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        //TODO: please check the expression of  WeekDayRegex and the reference to it, I straightforwardly copied from StrictWeekRegex, and then remove StrictWeekRegex
         public static readonly Regex WeekDayRegex =
             new Regex(
-                @"(?<weekday>Domingo|Lunes|Martes|Mi[eé]rcoles|Jueves|Viernes|S[aá]bado|Lu|Ma|Mi|Ju|Vi|Sa|Do)",
+                @"\b(?<weekday>Domingos?|Lunes|Martes|Mi[eé]rcoles|Jueves|Viernes|S[aá]bados?|Lu|Ma|Mi|Ju|Vi|Sa|Do)\b",
                 RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex OnRegex = new Regex($@"(?<=\ben\s+)({DayRegex}s?)\b",
@@ -40,6 +41,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
                 $@"(?<=\b(en|el|del)\s+)((?<day>10|11|12|13|14|15|16|17|18|19|1st|20|21|22|23|24|25|26|27|28|29|2|30|31|3|4|5|6|7|8|9)s?)\b",
                 RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        //TODO: check use WeekDayRegex or StrictWeekDayRegex for the following two regexes
         public static readonly Regex ThisRegex = new Regex($@"\b((este\s*){WeekDayRegex})|({WeekDayRegex}\s*((de\s+)?esta\s+semana))\b",
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
@@ -58,11 +60,6 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
         public static readonly Regex DateUnitRegex =
             new Regex(
                 @"(?<unit>anos|ano|meses|mes|semanas|semana|d[íi]as|d[íi]a)\b",
-                RegexOptions.IgnoreCase | RegexOptions.Singleline);
-
-        public static readonly Regex StrictWeekDay =
-            new Regex(
-                @"\b(?<weekday>Domingos?|Lunes|Martes|Mi[eé]rcoles|Jueves|Viernes|S[aá]bados?|Lu|Ma|Mi|Ju|Vi|Sa|Do)\b",
                 RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public static readonly Regex WeekDayOfMonthRegex =
@@ -123,7 +120,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
         public static readonly Regex[] ImplicitDateList =
         {
             OnRegex, RelaxedOnRegex, SpecialDayRegex, ThisRegex, LastDateRegex, NextDateRegex,
-            StrictWeekDay, WeekDayOfMonthRegex, SpecialDate
+            WeekDayRegex, WeekDayOfMonthRegex, SpecialDate
         };
 
         public static readonly Regex OfMonth = new Regex($@"^\s*de\s*{SpanishDatePeriodExtractorConfiguration.MonthSuffixRegex}",

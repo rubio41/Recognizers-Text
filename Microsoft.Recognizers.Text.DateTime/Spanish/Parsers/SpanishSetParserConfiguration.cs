@@ -43,7 +43,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
 
         public Regex EachDayRegex { get; }
 
-        public Regex StrictWeekDayRegex { get; }
+        public Regex SetWeekDayRegex { get; }
 
         public SpanishSetParserConfiguration(ICommonDateTimeParserConfiguration config)
         {
@@ -68,7 +68,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
             PeriodicRegex = SpanishSetExtractorConfiguration.PeriodicRegex;
             EachUnitRegex = SpanishSetExtractorConfiguration.EachUnitRegex;
             EachDayRegex = SpanishSetExtractorConfiguration.EachDayRegex;
-            StrictWeekDayRegex = SpanishSetExtractorConfiguration.StrictWeekDayRegex;
+            SetWeekDayRegex = SpanishSetExtractorConfiguration.SetWeekDayRegex;
         }
 
         public bool GetMatchedDailyTimex(string text, out string timex)

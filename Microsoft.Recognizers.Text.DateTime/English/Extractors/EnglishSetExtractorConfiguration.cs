@@ -26,7 +26,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
         public static readonly Regex EachDayRegex = new Regex(DateTimeDefinitions.EachDayRegex,
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        public static readonly Regex StrictWeekDayRegex = new Regex(DateTimeDefinitions.StrictWeekDay,
+        public static readonly Regex SetWeekDayRegex = new Regex(DateTimeDefinitions.SetWeekDayRegex,
             RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public EnglishSetExtractorConfiguration()
@@ -66,6 +66,6 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         Regex ISetExtractorConfiguration.BeforeEachDayRegex => null;
 
-        Regex ISetExtractorConfiguration.StrictWeekDayRegex => StrictWeekDayRegex;
+        Regex ISetExtractorConfiguration.SetWeekDayRegex => SetWeekDayRegex;
     }
 }

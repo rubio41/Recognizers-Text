@@ -123,7 +123,7 @@ namespace Microsoft.Recognizers.Text.DateTime
             }
 
             // handle "Mondays"
-            matches = this.config.StrictWeekDayRegex.Matches(text);
+            matches = this.config.SetWeekDayRegex.Matches(text);
             foreach (Match match in matches)
             {
             if (match.Success)
