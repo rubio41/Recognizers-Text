@@ -197,7 +197,7 @@ namespace Microsoft.Recognizers.Text.DateTime
         private DateTimeResolutionResult ParseEach(IExtractor extractor, IDateTimeParser parser, string text)
         {
             var ret = new DateTimeResolutionResult();
-            List < ExtractResult > ers = null;
+            List <ExtractResult> ers = null;
             // remove key words of set type from text
             var match = this.config.EachPrefixRegex.Match(text);
             var success = false;
