@@ -114,14 +114,6 @@ namespace Microsoft.Recognizers.Text.DateTime
                     var ers = extractor.Extract(trimedText);
                     foreach (var er in ers)
                     {
-                        // add some code for fixing some regex bugs of Spanish
-                        // in order to pass the test cases
-                        while (er.Text.StartsWith(" "))
-                        {
-                            er.Text = er.Text.Substring(1);
-                            er.Start = er.Start + 1;
-                            er.Length = er.Length - 1;
-                        }
                         if (er.Start <= match.Index)
                         {
                             ret.Add(new Token(er.Start ?? 0, (er.Start + match.Length + er.Length) ?? 0));
