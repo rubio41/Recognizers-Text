@@ -52,7 +52,10 @@ namespace Microsoft.Recognizers.Text.DateTime
                     innerResult = ParseEach(config.TimePeriodExtractor, config.TimePeriodParser, er.Text);
 
                     // deal with a special case: 'every morning at 9am'
-                    // advoiding 'morning' being extracted first, which lead morning at 9am can't be extracted
+                    // in old fushion, 'morning' extracted by Time Period Extractor on above code,
+                    // then extraction process of this sentence will be terminated,
+                    // case 'morning at 9 am' can't be extracted
+                    // add these below codes to advoid it
                     var anotherRes = ParseEach(config.TimeExtractor, config.TimeParser, er.Text);
                     if (anotherRes.Success)
                     {
