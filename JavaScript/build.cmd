@@ -1,5 +1,8 @@
 @ECHO off
 
+ECHO.
+ECHO # Building Javacript platform
+
 REM Check Node/NPM installation
 WHERE /q node
 IF ERRORLEVEL 1 (
@@ -12,13 +15,28 @@ IF ERRORLEVEL 1 (
     EXIT /B
 )
 
-IF NOT EXIST "node_modules" (
-	ECHO # Installing dependencies - npm install
-	CALL npm i
-)
+REM Prebuild each sub-module referenced on main module
+ECHO.
+ECHO # Building recognizers number module
+CALL npm run prebuild-number
 
+ECHO.
+ECHO # Building recognizers number-with-unit module
+CALL npm run prebuild-number-with-unit
+
+ECHO.
+ECHO # Building recognizers date-time module
+CALL npm run prebuild-date-time
+
+REM Build main module
+ECHO.
+ECHO # Installing dependencies - npm install
+CALL npm i
+
+ECHO.
 ECHO # Building - npm run build
 CALL npm run build
 
+ECHO.
 ECHO # Running test - npm run test
 CALL npm run test

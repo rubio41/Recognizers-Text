@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,12 +9,11 @@ namespace Microsoft.Recognizers.Text
     {
         public static readonly string DefaultCulture = Culture.English;
 
-        private readonly Dictionary<KeyValuePair<string, Type>, IModel> modelInstances = new Dictionary<KeyValuePair<string, Type>, IModel>();
+        private readonly ConcurrentDictionary<KeyValuePair<string, Type>, IModel> modelInstances = new ConcurrentDictionary<KeyValuePair<string, Type>, IModel>();
 
         public IModel GetModel<TModel>(string culture, bool fallbackToDefaultCulture = true)
         {
-            IModel model;
-            if (!TryGetModel<TModel>(culture, out model, fallbackToDefaultCulture))
+            if (!TryGetModel<TModel>(culture, out IModel model, fallbackToDefaultCulture))
             {
                 throw new ArgumentException($"ERROR: No IModel instance for {culture}-{typeof(TModel)}");
             }
@@ -52,8 +52,7 @@ namespace Microsoft.Recognizers.Text
 
         public bool ContainsModel<TModel>(string culture, bool fallbackToDefaultCulture = true)
         {
-            IModel model;
-            return TryGetModel<TModel>(culture, out model, fallbackToDefaultCulture);
+            return TryGetModel<TModel>(culture, out IModel model, fallbackToDefaultCulture);
         }
 
         private static KeyValuePair<string, Type> GenerateKey(string culture, Type type)
@@ -76,7 +75,7 @@ namespace Microsoft.Recognizers.Text
                 throw new ArgumentException($"ERROR: {culture}-{type} has already been registered.");
             }
 
-            modelInstances.Add(key, model);
+            modelInstances.TryAdd(key, model);
         }
 
         public void RegisterModel(string culture, Dictionary<Type, IModel> models)

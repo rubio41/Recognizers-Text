@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Microsoft.Recognizers.Text.Number.English;
 using Microsoft.Recognizers.Definitions.English;
 
 namespace Microsoft.Recognizers.Text.DateTime.English
@@ -14,7 +13,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
             SingleDateExtractor = new BaseDateExtractor(new EnglishDateExtractorConfiguration());
             SingleTimeExtractor = new BaseTimeExtractor(new EnglishTimeExtractorConfiguration());
             SingleDateTimeExtractor = new BaseDateTimeExtractor(new EnglishDateTimeExtractorConfiguration());
-            DurationExtractor=new BaseDurationExtractor(new EnglishDurationExtractorConfiguration());
+            DurationExtractor = new BaseDurationExtractor(new EnglishDurationExtractorConfiguration());
         }
         
         private static readonly Regex[] SimpleCases = 
@@ -54,6 +53,9 @@ namespace Microsoft.Recognizers.Text.DateTime.English
         public static readonly Regex RelativeTimeUnitRegex = 
             new Regex(DateTimeDefinitions.RelativeTimeUnitRegex, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
+        public static readonly Regex RestOfDateTimeRegex =
+            new Regex(DateTimeDefinitions.RestOfDateTimeRegex, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
         public Regex FollowedUnit => TimeFollowedUnit;
 
         Regex IDateTimePeriodExtractorConfiguration.NumberCombinedWithUnit => TimeNumberCombinedWithUnit;
@@ -61,6 +63,8 @@ namespace Microsoft.Recognizers.Text.DateTime.English
         Regex IDateTimePeriodExtractorConfiguration.TimeUnitRegex => TimeUnitRegex;
 
         Regex IDateTimePeriodExtractorConfiguration.RelativeTimeUnitRegex => RelativeTimeUnitRegex;
+
+        Regex IDateTimePeriodExtractorConfiguration.RestOfDateTimeRegex => RestOfDateTimeRegex;
 
         public Regex PastPrefixRegex => EnglishDatePeriodExtractorConfiguration.PastPrefixRegex;
 
@@ -89,6 +93,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
                 index = text.LastIndexOf("from", StringComparison.Ordinal);
                 return true;
             }
+
             return false;
         }
 
@@ -100,6 +105,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
                 index = text.LastIndexOf("between", StringComparison.Ordinal);
                 return true;
             }
+
             return false;
         }
 

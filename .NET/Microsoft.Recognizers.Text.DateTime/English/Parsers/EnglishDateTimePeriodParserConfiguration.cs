@@ -12,6 +12,8 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         public IExtractor DateTimeExtractor { get; }
 
+        public IExtractor TimePeriodExtractor { get; }
+
         public IExtractor CardinalExtractor { get; }
 
         public IExtractor DurationExtractor { get; }
@@ -23,6 +25,8 @@ namespace Microsoft.Recognizers.Text.DateTime.English
         public IDateTimeParser TimeParser { get; }
 
         public IDateTimeParser DateTimeParser { get; }
+
+        public IDateTimeParser TimePeriodParser { get; }
 
         public IDateTimeParser DurationParser { get; }
 
@@ -46,6 +50,8 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         public Regex RelativeTimeUnitRegex { get; }
 
+        public Regex RestOfDateTimeRegex { get; }
+
         public IImmutableDictionary<string, string> UnitMap { get; }
 
         public IImmutableDictionary<string, int> Numbers { get; }
@@ -55,13 +61,16 @@ namespace Microsoft.Recognizers.Text.DateTime.English
             DateExtractor = config.DateExtractor;
             TimeExtractor = config.TimeExtractor;
             DateTimeExtractor = config.DateTimeExtractor;
+            TimePeriodExtractor = config.TimePeriodExtractor;
             CardinalExtractor = config.CardinalExtractor;
             DurationExtractor = config.DurationExtractor;
             NumberParser = config.NumberParser;
             DateParser = config.DateParser;
             TimeParser = config.TimeParser;
+            TimePeriodParser = config.TimePeriodParser;
             DurationParser = config.DurationParser;
             DateTimeParser = config.DateTimeParser;
+
             PureNumberFromToRegex = EnglishTimePeriodExtractorConfiguration.PureNumFromTo;
             PureNumberBetweenAndRegex = EnglishTimePeriodExtractorConfiguration.PureNumBetweenAnd;
             SpecificTimeOfDayRegex = EnglishDateTimeExtractorConfiguration.SpecificTimeOfDayRegex;
@@ -72,22 +81,27 @@ namespace Microsoft.Recognizers.Text.DateTime.English
             UnitRegex = EnglishTimePeriodExtractorConfiguration.TimeUnitRegex;
             PeriodTimeOfDayWithDateRegex = EnglishDateTimePeriodExtractorConfiguration.PeriodTimeOfDayWithDateRegex;
             RelativeTimeUnitRegex = EnglishDateTimePeriodExtractorConfiguration.RelativeTimeUnitRegex;
+            RestOfDateTimeRegex = EnglishDateTimePeriodExtractorConfiguration.RestOfDateTimeRegex;
             UnitMap = config.UnitMap;
             Numbers = config.Numbers;
         }
 
-        public static readonly Regex MorningStartEndRegex = new Regex(DateTimeDefinitions.MorningStartEndRegex,
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
-        public static readonly Regex AfternoonStartEndRegex = new Regex(DateTimeDefinitions.AfternoonStartEndRegex,
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
-        public static readonly Regex EveningStartEndRegex = new Regex(DateTimeDefinitions.EveningStartEndRegex,
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
-        public static readonly Regex NightStartEndRegex = new Regex(DateTimeDefinitions.NightStartEndRegex,
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        public static readonly Regex MorningStartEndRegex = 
+            new Regex(DateTimeDefinitions.MorningStartEndRegex, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static readonly Regex AfternoonStartEndRegex = 
+            new Regex(DateTimeDefinitions.AfternoonStartEndRegex, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static readonly Regex EveningStartEndRegex = 
+            new Regex(DateTimeDefinitions.EveningStartEndRegex, RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
+        public static readonly Regex NightStartEndRegex = 
+            new Regex(DateTimeDefinitions.NightStartEndRegex, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         public bool GetMatchedTimeRange(string text, out string timeStr, out int beginHour, out int endHour, out int endMin)
         {
             var trimedText = text.Trim().ToLowerInvariant();
+
             beginHour = 0;
             endHour = 0;
             endMin = 0;
@@ -121,12 +135,14 @@ namespace Microsoft.Recognizers.Text.DateTime.English
                 timeStr = null;
                 return false;
             }
+
             return true;
         }
 
         public int GetSwiftPrefix(string text)
         {
             var trimedText = text.Trim().ToLowerInvariant();
+
             var swift = 0;
             if (trimedText.StartsWith("next"))
             {
@@ -136,6 +152,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
             {
                 swift = -1;
             }
+
             return swift;
         }
     }

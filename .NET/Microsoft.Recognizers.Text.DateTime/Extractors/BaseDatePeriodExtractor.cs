@@ -69,8 +69,7 @@ namespace Microsoft.Recognizers.Text.DateTime
 
                     // handle "desde"
                     var beforeStr = text.Substring(0, periodBegin).Trim().ToLowerInvariant();
-                    int fromIndex;
-                    if (this.config.GetFromTokenIndex(beforeStr, out fromIndex)
+                    if (this.config.GetFromTokenIndex(beforeStr, out int fromIndex)
                         || this.config.GetBetweenTokenIndex(beforeStr, out fromIndex))
                     {
                         periodBegin = fromIndex;
@@ -88,8 +87,7 @@ namespace Microsoft.Recognizers.Text.DateTime
 
                     // handle "entre"
                     var beforeStr = text.Substring(0, periodBegin).Trim().ToLowerInvariant();
-                    int beforeIndex;
-                    if (this.config.GetBetweenTokenIndex(beforeStr, out beforeIndex))
+                    if (this.config.GetBetweenTokenIndex(beforeStr, out int beforeIndex))
                     {
                         periodBegin = beforeIndex;
                         ret.Add(new Token(periodBegin, periodEnd));
@@ -192,13 +190,9 @@ namespace Microsoft.Recognizers.Text.DateTime
             return ret;
         }
 
-        private bool MatchRegexInPrefix(string beforeStr, Match match)
-        {
-            if (match.Success && string.IsNullOrWhiteSpace(beforeStr.Substring(match.Index + match.Length)))
-            {
-                return true;
-            }
-            return false;
+        private bool MatchRegexInPrefix(string beforeStr, Match match) {
+            var result =  match.Success && string.IsNullOrWhiteSpace(beforeStr.Substring(match.Index + match.Length));
+            return result;
         }
 
     }

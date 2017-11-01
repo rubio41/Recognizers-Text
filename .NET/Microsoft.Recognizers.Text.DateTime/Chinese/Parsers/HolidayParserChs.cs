@@ -16,6 +16,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
 
         private static readonly IParser IntegerParser = new ChineseNumberParser(new ChineseNumberParserConfiguration());
 
+        //@TODO Move to definitions
         public static readonly Dictionary<string, DateObject> FixedHolidaysDict = new Dictionary<string, DateObject>
         {
             
@@ -69,7 +70,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
 
         };
 
-        public static readonly Dictionary<string, string> NoFixedTimex = DateTimeDefinitions.Holiday_NoFixedTimex;
+        public static readonly Dictionary<string, string> NoFixedTimex = DateTimeDefinitions.HolidayNoFixedTimex;
 
         private readonly IFullDateTimeParserConfiguration config;
 
@@ -254,6 +255,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
                     value = HolidayFuncDict[holiday](referenceDate.Year + 1);
                 }
             }
+
             return value;
         }
 
@@ -271,6 +273,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
                     value = HolidayFuncDict[holiday](referenceDate.Year - 1);
                 }
             }
+
             return value;
         }
 

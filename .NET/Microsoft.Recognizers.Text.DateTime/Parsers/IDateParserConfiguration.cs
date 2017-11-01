@@ -21,7 +21,7 @@ namespace Microsoft.Recognizers.Text.DateTime
 
         IExtractor DurationExtractor { get; }
 
-        IParser DurationParser { get; }
+        IDateTimeParser DurationParser { get; }
 
         #endregion
 
@@ -39,6 +39,7 @@ namespace Microsoft.Recognizers.Text.DateTime
         Regex WeekDayOfMonthRegex { get; }
         Regex ForTheRegex { get; }
         Regex WeekDayAndDayOfMothRegex { get; }
+        Regex RelativeMonthRegex { get; }
 
         #endregion
 

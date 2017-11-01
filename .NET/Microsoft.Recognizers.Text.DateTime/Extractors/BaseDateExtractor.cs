@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using DateObject = System.DateTime;
 
 namespace Microsoft.Recognizers.Text.DateTime
 {
@@ -15,6 +14,7 @@ namespace Microsoft.Recognizers.Text.DateTime
         {
             this.config = config;
         }
+
         public List<ExtractResult> Extract(string text)
         {
             var tokens = new List<Token>();
@@ -38,6 +38,7 @@ namespace Microsoft.Recognizers.Text.DateTime
                     ret.Add(new Token(match.Index, match.Index + match.Length));
                 }
             }
+
             return ret;
         }
 
@@ -54,6 +55,7 @@ namespace Microsoft.Recognizers.Text.DateTime
                     ret.Add(new Token(match.Index, match.Index + match.Length));
                 }
             }
+
             return ret;
         }
 
@@ -61,13 +63,14 @@ namespace Microsoft.Recognizers.Text.DateTime
         private List<Token> NumberWithMonth(string text)
         {
             var ret = new List<Token>();
+
             var er = this.config.OrdinalExtractor.Extract(text);
             er.AddRange(this.config.IntegerExtractor.Extract(text));
+
             foreach (var result in er)
             {
-                var num = 0;
 
-                Int32.TryParse((this.config.NumberParser.Parse(result).Value ?? 0).ToString(), out num);
+                Int32.TryParse((this.config.NumberParser.Parse(result).Value ?? 0).ToString(), out int num);
 
                 if (num < 1 || num > 31)
                 {
@@ -117,26 +120,29 @@ namespace Microsoft.Recognizers.Text.DateTime
                         {
                             ret.Add(new Token(match.Index, result.Start + result.Length ?? 0));
                             continue;
-                            //var referenceDate = DateObject.Now;
-                            //var date = DateObject.MinValue.SafeCreateFromValue(referenceDate.Year, referenceDate.Month, num);
-                            //var date2WeekdayStr = date.DayOfWeek.ToString().ToLowerInvariant();
-                            //var extractedWeekDayStr = match.Groups["weekday"].Value.ToLowerInvariant();
-                            
-                            //if (date.Equals(DateObject.MinValue)
-                            //    || this.config.DayOfWeek[date2WeekdayStr] != this.config.DayOfWeek[extractedWeekDayStr])
-                            //{
-                            //    //separate to two date points
-                            //    ret.Add(new Token(match.Groups["weekday"].Index,
-                            //        match.Groups["weekday"].Index + match.Groups["weekday"].Length));
-                            //    ret.Add(new Token(match.Groups["DayOfMonth"].Index,
-                            //        match.Groups["DayOfMonth"].Index + match.Groups["DayOfMonth"].Length));
-                            //    continue;
-                            //}
-                            //else
-                            //{
-                            //    ret.Add(new Token(match.Index, result.Start + result.Length ?? 0));
-                            //    continue;
-                            //}
+                        }
+                    }
+
+                    // handling cases like '20th of next month'
+                    var suffixStr = text.Substring(result.Start + result.Length ?? 0);
+                    match = this.config.RelativeMonthRegex.Match(suffixStr.Trim());
+                    if (match.Success && match.Index == 0)
+                    {
+                        var spaceLen = suffixStr.Length - suffixStr.Trim().Length;
+                        ret.Add(new Token(result.Start ?? 0, result.Start + result.Length + spaceLen + match.Length ?? 0));
+                    }
+
+                    // handling cases like 'second Sunday'
+                    suffixStr = text.Substring(result.Start + result.Length ?? 0);
+                    match = this.config.WeekDayRegex.Match(suffixStr.Trim());
+                    if (match.Success && match.Index == 0 && num >= 1 && num <= 5 
+                        && result.Type.Equals(Number.Constants.SYS_NUM_ORDINAL))
+                    {
+                        var weekDayStr = match.Groups["weekday"].Value.ToLower();
+                        if (this.config.DayOfWeek.ContainsKey(weekDayStr))
+                        {
+                            var spaceLen = suffixStr.Length - suffixStr.Trim().Length;
+                            ret.Add(new Token(result.Start ?? 0, result.Start + result.Length + spaceLen + match.Length ?? 0));
                         }
                     }
                 }
@@ -153,6 +159,7 @@ namespace Microsoft.Recognizers.Text.DateTime
                     }
                 }
             }
+
             return ret;
         }
 
@@ -167,9 +174,7 @@ namespace Microsoft.Recognizers.Text.DateTime
                 if (match.Success)
                 {
                     ret = AgoLaterUtil.ExtractorDurationWithBeforeAndAfter(text,
-                        er,
-                        ret,
-                        config.UtilityConfiguration);
+                        er, ret, config.UtilityConfiguration);
                 }
             }
 
