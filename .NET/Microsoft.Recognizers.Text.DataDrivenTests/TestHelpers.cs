@@ -4,14 +4,15 @@ using System.IO;
 using System.Linq;
 using DateObject = System.DateTime;
 using Newtonsoft.Json;
+
 using Microsoft.Recognizers.Text.DateTime;
 using Microsoft.Recognizers.Text.DateTime.English;
 using Microsoft.Recognizers.Text.DateTime.Spanish;
 using Microsoft.Recognizers.Text.Number;
-using Microsoft.Recognizers.Text.Number.Chinese;
 using Microsoft.Recognizers.Text.NumberWithUnit;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Recognizers.Text.DateTime.French;
+using Microsoft.Recognizers.Text.Number.Chinese;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Microsoft.Recognizers.Text.DataDrivenTests
 {
@@ -122,7 +123,7 @@ namespace Microsoft.Recognizers.Text.DataDrivenTests
             throw new Exception($"Model '{modelName}' for '{language}' not supported");
         }
 
-        public static IExtractor GetExtractor(this TestContext context)
+        public static IDateTimeExtractor GetExtractor(this TestContext context)
         {
             var language = TestUtils.GetCulture(context.FullyQualifiedTestClassName);
             var extractorName = TestUtils.GetExtractor(context.TestName);
@@ -160,7 +161,7 @@ namespace Microsoft.Recognizers.Text.DataDrivenTests
             throw new Exception($"Parser '{parserName}' for '{language}' not supported");
         }
 
-        public static IExtractor GetEnglishExtractor(DateTimeExtractors extractorName)
+        public static IDateTimeExtractor GetEnglishExtractor(DateTimeExtractors extractorName)
         {
             switch (extractorName)
             {
@@ -221,7 +222,7 @@ namespace Microsoft.Recognizers.Text.DataDrivenTests
             throw new Exception($"Parser '{parserName}' for English not supported");
         }
 
-        public static IExtractor GetChineseExtractor(DateTimeExtractors extractorName)
+        public static IDateTimeExtractor GetChineseExtractor(DateTimeExtractors extractorName)
         {
             switch (extractorName)
             {
@@ -282,7 +283,7 @@ namespace Microsoft.Recognizers.Text.DataDrivenTests
             throw new Exception($"Parser '{parserName}' for English not supported");
         }
 
-        public static IExtractor GetSpanishExtractor(DateTimeExtractors extractorName)
+        public static IDateTimeExtractor GetSpanishExtractor(DateTimeExtractors extractorName)
         {
             switch (extractorName)
             {
@@ -341,7 +342,7 @@ namespace Microsoft.Recognizers.Text.DataDrivenTests
             throw new Exception($"Parser '{parserName}' for Spanish not supported");
         }
 
-        public static IExtractor GetFrenchExtractor(DateTimeExtractors extractorName)
+        public static IDateTimeExtractor GetFrenchExtractor(DateTimeExtractors extractorName)
         {
             switch (extractorName)
             {

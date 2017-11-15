@@ -21,8 +21,19 @@ FOR /R %%f IN (*Tests.dll) DO (
 		SET testcontainer=!testcontainer! "%%f"
 	)
 )
-CALL vstest.console %testcontainer%
+vstest.console %testcontainer% /Parallel 
+IF %ERRORLEVEL% NEQ 0 GOTO TEST_ERROR
 
 ECHO.
 ECHO # Running CreateAllPackages.cmd
 CALL CreateAllPackages.cmd
+IF %ERRORLEVEL% NEQ 0 (
+	ECHO # Failed to create packages.
+	EXIT /b -1
+)
+
+EXIT /b 0
+
+:TEST_ERROR
+ECHO Test failure(s) found!
+EXIT /b 1

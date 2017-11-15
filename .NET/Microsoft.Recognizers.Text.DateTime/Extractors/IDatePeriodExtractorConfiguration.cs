@@ -1,6 +1,8 @@
 ﻿ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+ using Microsoft.Recognizers.Text.Number;
+
 namespace Microsoft.Recognizers.Text.DateTime
 {
     public interface IDatePeriodExtractorConfiguration
@@ -27,11 +29,11 @@ namespace Microsoft.Recognizers.Text.DateTime
 
         Regex InConnectorRegex { get; }
 
-        IExtractor DatePointExtractor { get; }
+        IDateTimeExtractor DatePointExtractor { get; }
 
         IExtractor CardinalExtractor { get; }
 
-        IExtractor DurationExtractor { get; }
+        IDateTimeExtractor DurationExtractor { get; }
 
         bool GetFromTokenIndex(string text, out int index);
 

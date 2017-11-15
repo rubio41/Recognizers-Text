@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Microsoft.Recognizers.Text.Number.Chinese;
 using DateObject = System.DateTime;
+
+using Microsoft.Recognizers.Text.Number;
+using Microsoft.Recognizers.Text.Number.Chinese;
 
 namespace Microsoft.Recognizers.Text.DateTime.Chinese
 {
@@ -10,13 +12,13 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
     {
         public static readonly string ParserName = Constants.SYS_DATETIME_DATEPERIOD; //"DatePeriod";
 
-        private static readonly IExtractor SingleDateExtractor = new DateExtractorChs();
+        private static readonly IDateTimeExtractor SingleDateExtractor = new DateExtractorChs();
 
         private static readonly IExtractor IntegerExtractor = new IntegerExtractor();
 
         private static readonly IParser IntegerParser = new ChineseNumberParser(new ChineseNumberParserConfiguration());
 
-        private static readonly IExtractor Durationextractor = new DurationExtractorChs();
+        private static readonly IDateTimeExtractor Durationextractor = new DurationExtractorChs();
 
         private static readonly Calendar Cal = DateTimeFormatInfo.InvariantInfo.Calendar;
 
@@ -703,10 +705,10 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
         private DateTimeResolutionResult MergeTwoTimePoints(string text, DateObject referenceDate)
         {
             var ret = new DateTimeResolutionResult();
-            var er = SingleDateExtractor.Extract(text);
+            var er = SingleDateExtractor.Extract(text, referenceDate);
             if (er.Count < 2)
             {
-                er = SingleDateExtractor.Extract("on " + text);
+                er = SingleDateExtractor.Extract("on " + text, referenceDate);
                 if (er.Count < 2)
                 {
                     return ret;
@@ -832,7 +834,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
             }
 
             // for case "前两年" "后三年"
-            var durationRes = Durationextractor.Extract(text);
+            var durationRes = Durationextractor.Extract(text, referenceDate);
             if (durationRes.Count > 0)
             {
                 var beforeStr = text.Substring(0, (int)durationRes[0].Start).Trim().ToLowerInvariant();

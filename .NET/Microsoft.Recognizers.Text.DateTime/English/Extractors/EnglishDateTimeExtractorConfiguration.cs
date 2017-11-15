@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+
 using Microsoft.Recognizers.Text.DateTime.English.Utilities;
 using Microsoft.Recognizers.Text.DateTime.Utilities;
 using Microsoft.Recognizers.Definitions.English;
@@ -55,9 +55,9 @@ namespace Microsoft.Recognizers.Text.DateTime.English
             UtilityConfiguration = new EnlighDatetimeUtilityConfiguration();
         }
 
-        public IExtractor DatePointExtractor { get; }
+        public IDateTimeExtractor DatePointExtractor { get; }
 
-        public IExtractor TimePointExtractor { get; }
+        public IDateTimeExtractor TimePointExtractor { get; }
 
         public IDateTimeUtilityConfiguration UtilityConfiguration { get; }
 
@@ -79,7 +79,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         Regex IDateTimeExtractorConfiguration.UnitRegex => UnitRegex;
 
-        public IExtractor DurationExtractor { get; }
+        public IDateTimeExtractor DurationExtractor { get; }
 
         public bool IsConnector(string text)
         {

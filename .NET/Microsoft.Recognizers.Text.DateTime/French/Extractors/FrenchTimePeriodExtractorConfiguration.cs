@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
 using Microsoft.Recognizers.Text.DateTime.French.Utilities;
 using Microsoft.Recognizers.Text.DateTime.Utilities;
 using Microsoft.Recognizers.Definitions.French;
-using System;
 
 namespace Microsoft.Recognizers.Text.DateTime.French
 {
@@ -80,7 +80,7 @@ namespace Microsoft.Recognizers.Text.DateTime.French
         }
         public IDateTimeUtilityConfiguration UtilityConfiguration { get; }
 
-        public IExtractor SingleTimeExtractor { get; }
+        public IDateTimeExtractor SingleTimeExtractor { get; }
 
         public IEnumerable<Regex> SimpleCasesRegex => new Regex[] { PureNumFromTo, PureNumBetweenAnd, PmRegex, AmRegex };
 

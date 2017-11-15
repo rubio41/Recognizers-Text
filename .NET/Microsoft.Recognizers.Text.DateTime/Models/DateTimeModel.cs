@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Microsoft.Recognizers.Text.Number;
+using Microsoft.Recognizers.Text.Utilities;
+
 namespace Microsoft.Recognizers.Text.DateTime
 {
     public class DateTimeModel : IModel
     {
         public string ModelTypeName => "datetime";
         
-        protected IExtractor Extractor { get; private set; }
+        protected IDateTimeExtractor Extractor { get; private set; }
 
         protected IDateTimeParser Parser { get; private set; }
 
-        public DateTimeModel(IDateTimeParser parser, IExtractor extractor)
+        public DateTimeModel(IDateTimeParser parser, IDateTimeExtractor extractor)
         {
             this.Parser = parser;
             this.Extractor = extractor;
@@ -26,7 +29,7 @@ namespace Microsoft.Recognizers.Text.DateTime
         {
             // preprocess the query
             query = FormatUtility.Preprocess(query);
-            var extractResults = Extractor.Extract(query);
+            var extractResults = Extractor.Extract(query, refTime);
 
             var parseDateTimes = new List<DateTimeParseResult>();
             foreach (var result in extractResults)

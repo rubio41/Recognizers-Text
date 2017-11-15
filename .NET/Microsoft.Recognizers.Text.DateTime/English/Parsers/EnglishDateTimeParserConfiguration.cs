@@ -1,7 +1,9 @@
 ﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
+
 using Microsoft.Recognizers.Text.DateTime.Utilities;
 using Microsoft.Recognizers.Definitions.English;
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime.English
 {
@@ -11,9 +13,9 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         public string TokenBeforeTime { get; }
 
-        public IExtractor DateExtractor { get; }
+        public IDateTimeExtractor DateExtractor { get; }
 
-        public IExtractor TimeExtractor { get; }
+        public IDateTimeExtractor TimeExtractor { get; }
 
         public IDateTimeParser DateParser { get; }
 
@@ -23,7 +25,7 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         public IParser NumberParser { get; }
 
-        public IExtractor DurationExtractor { get; }
+        public IDateTimeExtractor DurationExtractor { get; }
 
         public IDateTimeParser DurationParser { get; }
 

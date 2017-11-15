@@ -3,6 +3,8 @@ using System.Text.RegularExpressions;
 using Microsoft.Recognizers.Text.DateTime.Utilities;
 using System.Collections.Immutable;
 
+using Microsoft.Recognizers.Text.Number;
+
 namespace Microsoft.Recognizers.Text.DateTime
 {
     public interface IDateExtractorConfiguration
@@ -31,7 +33,7 @@ namespace Microsoft.Recognizers.Text.DateTime
 
         IParser NumberParser { get; }
 
-        IExtractor DurationExtractor { get; }
+        IDateTimeExtractor DurationExtractor { get; }
 
         IDateTimeUtilityConfiguration UtilityConfiguration { get; }
 

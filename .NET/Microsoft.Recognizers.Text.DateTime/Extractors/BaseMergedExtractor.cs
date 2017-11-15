@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DateObject = System.DateTime;
+
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime
 {
-    public class BaseMergedExtractor : IExtractor
+    public class BaseMergedExtractor : IDateTimeExtractor
     {
         private readonly IMergedExtractorConfiguration config;
         private readonly DateTimeOptions options;
@@ -17,17 +20,26 @@ namespace Microsoft.Recognizers.Text.DateTime
 
         public List<ExtractResult> Extract(string text)
         {
+            return Extract(text, DateObject.Now);
+        }
+
+        public List<ExtractResult> Extract(string text, DateObject reference)
+        {
             var ret = new List<ExtractResult>();
-            // the order is important, since there is a problem in merging
-            AddTo(ret, this.config.DateExtractor.Extract(text), text);
-            AddTo(ret, this.config.TimeExtractor.Extract(text), text);
-            AddTo(ret, this.config.DurationExtractor.Extract(text), text);
-            AddTo(ret, this.config.DatePeriodExtractor.Extract(text), text);
-            AddTo(ret, this.config.DateTimeExtractor.Extract(text), text);
-            AddTo(ret, this.config.TimePeriodExtractor.Extract(text), text);
-            AddTo(ret, this.config.DateTimePeriodExtractor.Extract(text), text);
-            AddTo(ret, this.config.GetExtractor.Extract(text), text);
-            AddTo(ret, this.config.HolidayExtractor.Extract(text), text);
+
+            // The order is important, since there is a problem in merging
+            AddTo(ret, this.config.DateExtractor.Extract(text, reference), text);
+            AddTo(ret, this.config.TimeExtractor.Extract(text, reference), text);
+            AddTo(ret, this.config.DurationExtractor.Extract(text, reference), text);
+            AddTo(ret, this.config.DatePeriodExtractor.Extract(text, reference), text);
+            AddTo(ret, this.config.DateTimeExtractor.Extract(text, reference), text);
+            AddTo(ret, this.config.TimePeriodExtractor.Extract(text, reference), text);
+            AddTo(ret, this.config.DateTimePeriodExtractor.Extract(text, reference), text);
+            AddTo(ret, this.config.SetExtractor.Extract(text, reference), text);
+            AddTo(ret, this.config.HolidayExtractor.Extract(text, reference), text);
+            
+            // This should be at the end since if need the extractor to determine the previous text contains time or not
+            AddTo(ret, NumberEndingRegexMatch(text, ret), text);
 
             AddMod(ret, text);
 
@@ -103,6 +115,7 @@ namespace Microsoft.Recognizers.Text.DateTime
                             tempDst.Add(dst[i]);
                         }
                     }
+
                     //insert at the first overlap occurence to keep the order
                     tempDst.Insert(firstIndex, result);
                     dst.Clear();
@@ -127,6 +140,36 @@ namespace Microsoft.Recognizers.Text.DateTime
             }
 
             return false;
+        }
+
+        // handle cases like "move 3pm appointment to 4"
+        private List<ExtractResult> NumberEndingRegexMatch(string text, List<ExtractResult> extractResults)
+        {
+            var tokens = new List<Token>();
+
+            foreach (var extractResult in extractResults)
+            {
+                if (extractResult.Type.Equals(Constants.SYS_DATETIME_TIME)
+                    || extractResult.Type.Equals(Constants.SYS_DATETIME_DATETIME))
+                {
+                    var stringAfter = text.Substring((int)extractResult.Start + (int)extractResult.Length);
+                    var match = this.config.NumberEndingPattern.Match(stringAfter);
+                    if (match != null && match.Success)
+                    {
+                        var newTime = match.Groups["newTime"];
+                        var numRes = this.config.IntegerExtractor.Extract(newTime.ToString());
+                        if (numRes.Count == 0)
+                        {
+                            continue;
+                        }
+
+                        var startPosition = (int)extractResult.Start + (int)extractResult.Length + newTime.Index;
+                        tokens.Add(new Token(startPosition, startPosition + newTime.Length));
+                    }
+                }
+            }
+
+            return Token.MergeAllTokens(tokens, text, Constants.SYS_DATETIME_TIME);
         }
 
         private void AddMod(List<ExtractResult> ers, string text)

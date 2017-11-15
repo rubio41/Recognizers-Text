@@ -1,6 +1,8 @@
-﻿using Microsoft.Recognizers.Definitions.English;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
+
+using Microsoft.Recognizers.Definitions.English;
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime.English
 {
@@ -8,13 +10,13 @@ namespace Microsoft.Recognizers.Text.DateTime.English
     {
         public string TokenBeforeDate { get; }
 
-        #region internalsParsers
+        #region internalParsers
 
-        public IExtractor DateExtractor { get; }
+        public IDateTimeExtractor DateExtractor { get; }
 
         public IExtractor CardinalExtractor { get; }
 
-        public IExtractor DurationExtractor { get; }
+        public IDateTimeExtractor DurationExtractor { get; }
 
         public IParser NumberParser { get; }
 

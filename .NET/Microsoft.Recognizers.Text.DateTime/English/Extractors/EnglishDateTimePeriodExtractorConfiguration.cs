@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
 using Microsoft.Recognizers.Definitions.English;
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime.English
 {
@@ -76,13 +78,13 @@ namespace Microsoft.Recognizers.Text.DateTime.English
 
         public IExtractor CardinalExtractor { get; }
 
-        public IExtractor SingleDateExtractor { get; }
+        public IDateTimeExtractor SingleDateExtractor { get; }
 
-        public IExtractor SingleTimeExtractor { get; }
+        public IDateTimeExtractor SingleTimeExtractor { get; }
 
-        public IExtractor SingleDateTimeExtractor { get; }
+        public IDateTimeExtractor SingleDateTimeExtractor { get; }
 
-        public IExtractor DurationExtractor { get; }
+        public IDateTimeExtractor DurationExtractor { get; }
 
         //TODO: these three methods are the same in DatePeriod, should be abstracted
         public bool GetFromTokenIndex(string text, out int index)

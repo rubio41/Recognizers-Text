@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using DateObject = System.DateTime;
 
+using Microsoft.Recognizers.Text.Number;
+
 namespace Microsoft.Recognizers.Text.DateTime
 {
     public class BaseDatePeriodParser : IDateTimeParser
@@ -494,10 +496,10 @@ namespace Microsoft.Recognizers.Text.DateTime
         {
             var ret = new DateTimeResolutionResult();
 
-            var er = this.config.DateExtractor.Extract(text);
+            var er = this.config.DateExtractor.Extract(text, referenceDate);
             if (er.Count < 2)
             {
-                er = this.config.DateExtractor.Extract(this.config.TokenBeforeDate + text);
+                er = this.config.DateExtractor.Extract(this.config.TokenBeforeDate + text, referenceDate);
                 if (er.Count < 2)
                 {
                     return ret;
@@ -547,7 +549,7 @@ namespace Microsoft.Recognizers.Text.DateTime
             string timex = string.Empty;
             bool restNowSunday = false;
 
-            var ers = config.DurationExtractor.Extract(text);
+            var ers = config.DurationExtractor.Extract(text, referenceDate);
             if (ers.Count == 1)
             {
                 var pr = config.DurationParser.Parse(ers[0]);
@@ -855,7 +857,7 @@ namespace Microsoft.Recognizers.Text.DateTime
         {
             var ret = new DateTimeResolutionResult();
             var match = config.WeekOfRegex.Match(text);
-            var ex = config.DateExtractor.Extract(text);
+            var ex = config.DateExtractor.Extract(text, referenceDate);
             if (match.Success && ex.Count==1)
             {
                 var pr= (DateTimeResolutionResult)config.DateParser.Parse(ex[0], referenceDate).Value;
@@ -872,7 +874,7 @@ namespace Microsoft.Recognizers.Text.DateTime
         {
             var ret = new DateTimeResolutionResult();
             var match = config.MonthOfRegex.Match(text);
-            var ex = config.DateExtractor.Extract(text);
+            var ex = config.DateExtractor.Extract(text, referenceDate);
             if (match.Success && ex.Count == 1)
             {
                 var pr = (DateTimeResolutionResult)config.DateParser.Parse(ex[0], referenceDate).Value;

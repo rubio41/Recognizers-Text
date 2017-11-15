@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
+
 using Microsoft.Recognizers.Definitions.English;
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime.English
 {
@@ -23,23 +25,28 @@ namespace Microsoft.Recognizers.Text.DateTime.English
         public static readonly Regex PrepositionSuffixRegex =
             new Regex(DateTimeDefinitions.PrepositionSuffixRegex, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        public IExtractor DateExtractor { get; }
+        public static readonly Regex NumberEndingPattern =
+            new Regex(DateTimeDefinitions.NumberEndingPattern, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        public IExtractor TimeExtractor { get; }
+        public IDateTimeExtractor DateExtractor { get; }
 
-        public IExtractor DateTimeExtractor { get; }
+        public IDateTimeExtractor TimeExtractor { get; }
 
-        public IExtractor DatePeriodExtractor { get; }
+        public IDateTimeExtractor DateTimeExtractor { get; }
 
-        public IExtractor TimePeriodExtractor { get; }
+        public IDateTimeExtractor DatePeriodExtractor { get; }
 
-        public IExtractor DateTimePeriodExtractor { get; }
+        public IDateTimeExtractor TimePeriodExtractor { get; }
 
-        public IExtractor DurationExtractor { get; }
+        public IDateTimeExtractor DateTimePeriodExtractor { get; }
 
-        public IExtractor GetExtractor { get; }
+        public IDateTimeExtractor DurationExtractor { get; }
 
-        public IExtractor HolidayExtractor { get; }
+        public IDateTimeExtractor SetExtractor { get; }
+
+        public IDateTimeExtractor HolidayExtractor { get; }
+
+        public IExtractor IntegerExtractor { get; }
 
         public EnglishMergedExtractorConfiguration()
         {
@@ -50,8 +57,9 @@ namespace Microsoft.Recognizers.Text.DateTime.English
             TimePeriodExtractor = new BaseTimePeriodExtractor(new EnglishTimePeriodExtractorConfiguration());
             DateTimePeriodExtractor = new BaseDateTimePeriodExtractor(new EnglishDateTimePeriodExtractorConfiguration());
             DurationExtractor = new BaseDurationExtractor(new EnglishDurationExtractorConfiguration());
-            GetExtractor = new BaseSetExtractor(new EnglishSetExtractorConfiguration());
+            SetExtractor = new BaseSetExtractor(new EnglishSetExtractorConfiguration());
             HolidayExtractor = new BaseHolidayExtractor(new EnglishHolidayExtractorConfiguration());
+            IntegerExtractor = Number.English.IntegerExtractor.GetInstance();
         }
 
         Regex IMergedExtractorConfiguration.AfterRegex => AfterRegex;
@@ -60,5 +68,6 @@ namespace Microsoft.Recognizers.Text.DateTime.English
         Regex IMergedExtractorConfiguration.FromToRegex => FromToRegex;
         Regex IMergedExtractorConfiguration.SingleAmbiguousMonthRegex => SingleAmbiguousMonthRegex;
         Regex IMergedExtractorConfiguration.PrepositionSuffixRegex => PrepositionSuffixRegex;
+        Regex IMergedExtractorConfiguration.NumberEndingPattern => NumberEndingPattern;
     }
 }

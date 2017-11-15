@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+
 using Microsoft.Recognizers.Definitions.Spanish;
 using Microsoft.Recognizers.Text.DateTime.Spanish.Utilities;
 using Microsoft.Recognizers.Text.DateTime.Utilities;
@@ -32,11 +33,11 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
             UtilityConfiguration = new SpanishDatetimeUtilityConfiguration();
         }
 
-        public IExtractor DatePointExtractor { get; }
+        public IDateTimeExtractor DatePointExtractor { get; }
 
-        public IExtractor TimePointExtractor { get; }
+        public IDateTimeExtractor TimePointExtractor { get; }
 
-        public IExtractor DurationExtractor { get; }
+        public IDateTimeExtractor DurationExtractor { get; }
 
         public IDateTimeUtilityConfiguration UtilityConfiguration { get; }
 

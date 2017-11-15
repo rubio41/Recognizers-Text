@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+
 using System.Text.RegularExpressions;
 using Microsoft.Recognizers.Definitions.Spanish;
 using Microsoft.Recognizers.Text.DateTime.Spanish.Utilities;
 using Microsoft.Recognizers.Text.DateTime.Utilities;
 using Microsoft.Recognizers.Text.Number;
 using Microsoft.Recognizers.Text.Number.Spanish;
-using System.Collections.Immutable;
 
 namespace Microsoft.Recognizers.Text.DateTime.Spanish
 {
@@ -98,7 +99,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
 
         public IParser NumberParser { get; }
 
-        public IExtractor DurationExtractor { get; }
+        public IDateTimeExtractor DurationExtractor { get; }
 
         public IDateTimeUtilityConfiguration UtilityConfiguration { get; }
 

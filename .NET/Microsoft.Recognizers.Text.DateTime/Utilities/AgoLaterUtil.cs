@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Microsoft.Recognizers.Text.DateTime.Utilities;
+using Microsoft.Recognizers.Text.Number;
+
 using DateObject = System.DateTime;
 
 namespace Microsoft.Recognizers.Text.DateTime
@@ -44,7 +46,7 @@ namespace Microsoft.Recognizers.Text.DateTime
 
         public static DateTimeResolutionResult ParseDurationWithAgoAndLater(string text, 
             DateObject referenceTime, 
-            IExtractor durationExtractor,
+            IDateTimeExtractor durationExtractor,
             IDateTimeParser durationParser, 
             IImmutableDictionary<string, string> unitMap,
             Regex unitRegex,
@@ -52,7 +54,7 @@ namespace Microsoft.Recognizers.Text.DateTime
             AgoLaterMode mode)
         {
             var ret = new DateTimeResolutionResult();
-            var durationRes = durationExtractor.Extract(text);
+            var durationRes = durationExtractor.Extract(text, referenceTime);
             if (durationRes.Count > 0)
             {
                 var pr = durationParser.Parse(durationRes[0], referenceTime);

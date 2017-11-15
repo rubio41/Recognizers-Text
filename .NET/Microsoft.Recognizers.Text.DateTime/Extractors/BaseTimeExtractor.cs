@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using DateObject = System.DateTime;
+
 using Microsoft.Recognizers.Definitions;
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime
 {
-    public class BaseTimeExtractor : IExtractor
+    public class BaseTimeExtractor : IDateTimeExtractor
     {
         private static readonly string ExtractorName = Constants.SYS_DATETIME_TIME; // "Time";
 
@@ -23,10 +26,15 @@ namespace Microsoft.Recognizers.Text.DateTime
 
         public virtual List<ExtractResult> Extract(string text)
         {
+            return Extract(text, DateObject.Now);
+        }
+
+        public virtual List<ExtractResult> Extract(string text, DateObject reference)
+        {
             var tokens = new List<Token>();
             tokens.AddRange(BasicRegexMatch(text));
             tokens.AddRange(AtRegexMatch(text));
-            tokens.AddRange(SpecialsRegexMatch(text));
+            tokens.AddRange(SpecialsRegexMatch(text, reference));
 
             return Token.MergeAllTokens(tokens, text, ExtractorName);
         }
@@ -65,13 +73,14 @@ namespace Microsoft.Recognizers.Text.DateTime
             return ret;
         }
 
-        private List<Token> SpecialsRegexMatch(string text)
+        private List<Token> SpecialsRegexMatch(string text, DateObject reference)
         {
             var ret = new List<Token>();
             // handle "ish"
             if (this.config.IshRegex != null && this.config.IshRegex.IsMatch(text))
             {
                 var matches = this.config.IshRegex.Matches(text);
+
                 foreach (Match match in matches)
                 {
                     ret.Add(new Token(match.Index, match.Index + match.Length));

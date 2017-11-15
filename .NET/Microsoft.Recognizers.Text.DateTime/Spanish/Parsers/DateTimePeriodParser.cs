@@ -1,6 +1,7 @@
 ﻿using System;
-using Microsoft.Recognizers.Definitions.Spanish;
 using DateObject = System.DateTime;
+
+using Microsoft.Recognizers.Definitions.Spanish;
 
 namespace Microsoft.Recognizers.Text.DateTime.Spanish
 {
@@ -47,7 +48,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Spanish
             if (match.Success)
             {
                 var beforeStr = trimedText.Substring(0, match.Index + startIndex).Trim();
-                var ers = this.Config.DateExtractor.Extract(beforeStr);
+                var ers = this.Config.DateExtractor.Extract(beforeStr, referenceTime);
                 if (ers.Count == 0)
                 {
                     return ret;

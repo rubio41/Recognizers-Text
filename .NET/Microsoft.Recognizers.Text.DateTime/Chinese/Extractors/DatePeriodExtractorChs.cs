@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.Recognizers.Definitions.Chinese;
 using Microsoft.Recognizers.Text.Number.Chinese;
+using DateObject = System.DateTime;
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime.Chinese
 {
-    public class DatePeriodExtractorChs : IExtractor
+    public class DatePeriodExtractorChs : IDateTimeExtractor
     {
         public static readonly string ExtractorName = Constants.SYS_DATETIME_DATEPERIOD; // "DatePeriod";
 
@@ -91,9 +93,14 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
 
         public List<ExtractResult> Extract(string text)
         {
+            return Extract(text, DateObject.Now);
+        }
+
+        public List<ExtractResult> Extract(string text, DateObject referenceTime)
+        {
             var tokens = new List<Token>();
             tokens.AddRange(MatchSimpleCases(text));
-            tokens.AddRange(MergeTwoTimePoints(text));
+            tokens.AddRange(MergeTwoTimePoints(text, referenceTime));
             tokens.AddRange(MatchNumberWithUnit(text));
 
             return Token.MergeAllTokens(tokens, text, ExtractorName);
@@ -115,10 +122,10 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
         }
 
         // merge two date
-        private static List<Token> MergeTwoTimePoints(string text)
+        private static List<Token> MergeTwoTimePoints(string text, DateObject referenceTime)
         {
             var ret = new List<Token>();
-            var er = DatePointExtractor.Extract(text);
+            var er = DatePointExtractor.Extract(text, referenceTime);
             if (er.Count <= 1)
             {
                 return ret;

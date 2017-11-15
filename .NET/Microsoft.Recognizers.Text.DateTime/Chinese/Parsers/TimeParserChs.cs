@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.Recognizers.Definitions.Chinese;
 using DateObject = System.DateTime;
+
+using Microsoft.Recognizers.Definitions.Chinese;
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime.Chinese
 {
     public class TimeParserChs : IDateTimeParser
     {
-        public static readonly IExtractor TimeExtractor = new TimeExtractorChs();
+        public static readonly IDateTimeExtractor TimeExtractor = new TimeExtractorChs();
 
         private delegate TimeResult TimeFunction(DateTimeExtra<TimeType> extra);
 
@@ -40,7 +42,7 @@ namespace Microsoft.Recognizers.Text.DateTime.Chinese
             var extra = er.Data as DateTimeExtra<TimeType>;
             if (extra == null)
             {
-                var result = TimeExtractor.Extract(er.Text);
+                var result = TimeExtractor.Extract(er.Text, refDate);
                 extra = result[0]?.Data as DateTimeExtra<TimeType>;
             }
 

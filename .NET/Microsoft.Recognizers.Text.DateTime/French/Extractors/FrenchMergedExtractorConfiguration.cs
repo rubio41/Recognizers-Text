@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
+
 using Microsoft.Recognizers.Definitions.French;
+using Microsoft.Recognizers.Text.Number;
 
 namespace Microsoft.Recognizers.Text.DateTime.French
 {
@@ -23,23 +25,29 @@ namespace Microsoft.Recognizers.Text.DateTime.French
         public static readonly Regex PrepositionSuffixRegex =
             new Regex(DateTimeDefinitions.PrepositionSuffixRegex, RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        public IExtractor DateExtractor { get; }
+        public static readonly Regex NumberEndingPattern =
+            new Regex(DateTimeDefinitions.NumberEndingPattern,
+                RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
-        public IExtractor TimeExtractor { get; }
+        public IDateTimeExtractor DateExtractor { get; }
 
-        public IExtractor DateTimeExtractor { get; }
+        public IDateTimeExtractor TimeExtractor { get; }
 
-        public IExtractor DatePeriodExtractor { get; }
+        public IDateTimeExtractor DateTimeExtractor { get; }
 
-        public IExtractor TimePeriodExtractor { get; }
+        public IDateTimeExtractor DatePeriodExtractor { get; }
 
-        public IExtractor DateTimePeriodExtractor { get; }
+        public IDateTimeExtractor TimePeriodExtractor { get; }
 
-        public IExtractor DurationExtractor { get; }
+        public IDateTimeExtractor DateTimePeriodExtractor { get; }
 
-        public IExtractor GetExtractor { get; }
+        public IDateTimeExtractor DurationExtractor { get; }
 
-        public IExtractor HolidayExtractor { get; }
+        public IDateTimeExtractor SetExtractor { get; }
+
+        public IDateTimeExtractor HolidayExtractor { get; }
+
+        public IExtractor IntegerExtractor { get; }
 
         public FrenchMergedExtractorConfiguration()
         {
@@ -50,8 +58,9 @@ namespace Microsoft.Recognizers.Text.DateTime.French
             TimePeriodExtractor = new BaseTimePeriodExtractor(new FrenchTimePeriodExtractorConfiguration());
             DateTimePeriodExtractor = new BaseDateTimePeriodExtractor(new FrenchDateTimePeriodExtractorConfiguration());
             DurationExtractor = new BaseDurationExtractor(new FrenchDurationExtractorConfiguration());
-            GetExtractor = new BaseSetExtractor(new FrenchSetExtractorConfiguration());
+            SetExtractor = new BaseSetExtractor(new FrenchSetExtractorConfiguration());
             HolidayExtractor = new BaseHolidayExtractor(new FrenchHolidayExtractorConfiguration());
+            IntegerExtractor = new Number.French.IntegerExtractor();
         }
 
         Regex IMergedExtractorConfiguration.AfterRegex => AfterRegex;
@@ -60,5 +69,6 @@ namespace Microsoft.Recognizers.Text.DateTime.French
         Regex IMergedExtractorConfiguration.FromToRegex => FromToRegex;
         Regex IMergedExtractorConfiguration.SingleAmbiguousMonthRegex => SingleAmbiguousMonthRegex;
         Regex IMergedExtractorConfiguration.PrepositionSuffixRegex => PrepositionSuffixRegex;
+        Regex IMergedExtractorConfiguration.NumberEndingPattern => NumberEndingPattern;
     }
 }
