@@ -883,4 +883,40 @@
     }
   ]
 }
+,
+{
+  "Input": "I'll leave at 2015-09-23 1pm to 4",
+  "NotSupported": "javascript",
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "2015-09-23 1pm to 4",
+      "Type": "datetimerange"
+    }
+  ]
+}
+,
+{
+  "Input": "I'll leave at 2015-09-23 1pm to 4.",
+  "NotSupported": "javascript",
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "2015-09-23 1pm to 4",
+      "Type": "datetimerange"
+    }
+  ]
+}
+,
+{
+  "Input": "I'll leave at 2015-09-23 1pm to 4!",
+  "NotSupported": "javascript",
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "2015-09-23 1pm to 4",
+      "Type": "datetimerange"
+    }
+  ]
+}
 ]

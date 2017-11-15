@@ -481,4 +481,26 @@
     }
   ]
 }
+,
+{
+  "Input": "set up meeting from 1pm to 4",
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "from 1pm to 4",
+      "Type": "timerange"
+    }
+  ]
+}
+,
+{
+  "Input": "set up meeting from 1pm to 4?",
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "from 1pm to 4",
+      "Type": "timerange"
+    }
+  ]
+}
 ]
