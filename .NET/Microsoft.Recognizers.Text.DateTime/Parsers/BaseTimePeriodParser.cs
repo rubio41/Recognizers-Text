@@ -197,7 +197,37 @@ namespace Microsoft.Recognizers.Text.DateTime
             var ers = this.config.TimeExtractor.Extract(text, referenceTime);
             if (ers.Count != 2)
             {
-                return ret;
+                // special handle: 1 pm to 4. Treat as 1pm to 4pm
+                var endingNumber = false;
+                if (ers.Count == 1)
+                {
+                    var NumberExtractor = Number.English.IntegerExtractor.GetInstance();
+                    var NumberErs = NumberExtractor.Extract(text);
+                    if (NumberErs.Count == 2)
+                    {
+                        var hourRegex = new System.Text.RegularExpressions.Regex(Definitions.English.DateTimeDefinitions.HourRegex);
+                        var hourMatch = hourRegex.Match(NumberErs[1].Text);
+
+                        var afterStr = text.Substring(NumberErs[1].Start + NumberErs[1].Length ?? 0);
+                        var regex = new System.Text.RegularExpressions.Regex(Definitions.English.DateTimeDefinitions.GeneralEndingRegex);
+                        var endMatch = regex.Match(afterStr);
+                        if (endMatch.Success && hourMatch.Success)
+                        {
+                            var suffix = ers[0].Text.Replace(NumberErs[0].Text, "");
+                            NumberErs[1].Text = NumberErs[1].Text + suffix;
+                            NumberErs[1].Length = NumberErs[1].Length + suffix.Length;
+                            NumberErs[1].Data = null;
+                            NumberErs[1].Type = "time";
+                            ers.Add(NumberErs[1]);
+                            endingNumber = true;
+                        }
+                    }
+                }
+
+                if (!endingNumber)
+                {
+                    return ret;
+                }
             }
 
             pr1 = this.config.TimeParser.Parse(ers[0], referenceTime);

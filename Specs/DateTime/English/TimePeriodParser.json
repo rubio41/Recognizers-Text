@@ -822,4 +822,54 @@
     }
   ]
 }
+,
+{
+  "Input": "let's meet 1pm to 4",
+  "Context": {
+    "ReferenceDateTime": "2016-11-15T16:12:00"
+  },
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "1pm to 4",
+      "Type": "timerange",
+      "Value": {
+        "Timex": "(T13,T16,PT3H)",
+        "FutureResolution": {
+          "startTime": "13:00:00",
+          "endTime": "16:00:00"
+        },
+        "PastResolution": {
+          "startTime": "13:00:00",
+          "endTime": "16:00:00"
+        }
+      }
+    }
+  ]
+}
+,
+{
+  "Input": "let's meet 1pm to 4!",
+  "Context": {
+    "ReferenceDateTime": "2016-11-15T16:12:00"
+  },
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "1pm to 4",
+      "Type": "timerange",
+      "Value": {
+        "Timex": "(T13,T16,PT3H)",
+        "FutureResolution": {
+          "startTime": "13:00:00",
+          "endTime": "16:00:00"
+        },
+        "PastResolution": {
+          "startTime": "13:00:00",
+          "endTime": "16:00:00"
+        }
+      }
+    }
+  ]
+}
 ]
