@@ -239,13 +239,8 @@ namespace Microsoft.Recognizers.Text.DateTime
 
                         if (pauseMatch.Success)
                         {
-                            var suffix = afterStr.Substring(match.Index + match.Length).TrimStart(' ');
-    
-                            var endingMatch = config.GeneralEndingRegex.Match(suffix);
-                            if (endingMatch.Success)
-                            {
-                                ret.Add(new Token(er.Start ?? 0, er.Start + er.Length + match.Index + match.Length ?? 0));
-                            }
+
+                            ret.Add(new Token(er.Start ?? 0, er.Start + er.Length + match.Index + match.Length ?? 0));
                         }
                     }
                 }
@@ -255,7 +250,9 @@ namespace Microsoft.Recognizers.Text.DateTime
                 match = this.config.PeriodTimeOfDayWithDateRegex.Match(prefixStr);
                 if (match.Success)
                 {
-                    if (string.IsNullOrWhiteSpace(prefixStr.Substring(match.Index + match.Length)))
+                    var middleStrStart = match.Index + match.Length;
+                    if ((middleStrStart >= prefixStr.Length) 
+                        || (string.IsNullOrWhiteSpace(prefixStr.Substring(middleStrStart))))
                     {
                         var midStr = text.Substring(match.Index + match.Length, er.Start - match.Index - match.Length ?? 0);
                         if (!string.IsNullOrEmpty(midStr) && string.IsNullOrWhiteSpace(midStr))
