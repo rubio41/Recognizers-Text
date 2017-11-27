@@ -302,7 +302,7 @@ PeriodSpecificTimeOfDayRegex: !nestedRegex
   def: \b(({StrictRelativeRegex}\s+{PeriodTimeOfDayRegex})\b|\btonight)\b
   references: [ PeriodTimeOfDayRegex, StrictRelativeRegex ]
 PeriodTimeOfDayWithDateRegex: !nestedRegex
- def: \b(({TimeOfDayRegex}(\s+on)?))\b
+ def: \b(({TimeOfDayRegex}(\s+(on|of))?))\b
  references: [ TimeOfDayRegex]
 DurationUnitRegex: !simpleRegex
   def: (?<unit>years|year|months|month|weeks|week|days|day|hours|hour|hrs|hr|h|minutes|minute|mins|min|seconds|second|secs|sec)\b
