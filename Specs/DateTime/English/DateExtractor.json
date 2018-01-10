@@ -1231,4 +1231,27 @@
     }
   ]
 }
+,
+{
+  "Input": "I left here the 20th next month",
+  "NotSupported": "javascript",
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "the 20th next month",
+      "Type": "date"
+    }
+  ]
+}
+,
+{
+  "Input": "I left here 5 December 1391",
+  "NotSupportedByDesign": "python",
+  "Results": [
+    {
+      "Text": "5 December 1391",
+      "Type": "date"
+    }
+  ]
+}
 ]
