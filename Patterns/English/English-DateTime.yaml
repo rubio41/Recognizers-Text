@@ -179,6 +179,8 @@ LunchRegex: !simpleRegex
   def: \b(lunchtime)\b
 NightRegex: !simpleRegex
   def: \b(midnight|night)\b
+CommonDatePrefixRegex: !simpleRegex
+  def: ^[\.]
 LessThanOneHour: !nestedRegex
   def: (?<lth>(a\s+)?quarter|three quarter(s)?|half( an hour)?|{BaseDateTime.DeltaMinuteRegex}(\s+(minute|minutes|min|mins))|{DeltaMinuteNumRegex}(\s+(minute|minutes|min|mins)))
   references: [ BaseDateTime.DeltaMinuteRegex, DeltaMinuteNumRegex ]
@@ -427,6 +429,16 @@ MiddlePauseRegex: !simpleRegex
   def: \s*(,)\s*
 DurationConnectorRegex: !simpleRegex
   def: ^\s*(?<connector>\s+|and|,)\s*$
+PrefixArticleRegex: !simpleRegex
+  def: \bthe\s+
+NumberAsTimeRegex: !nestedRegex
+  def: \b({EngTimeRegex}|{PeriodHourNumRegex}|{BaseDateTime.HourRegex})\b
+  references: [ EngTimeRegex, PeriodHourNumRegex, BaseDateTime.HourRegex ]
+TimeBeforeAfterRegex: !nestedRegex
+  def: \b(((?<=\b(before|after)\s+)({EngTimeRegex}|{HourNumRegex}|{BaseDateTime.HourRegex}|{MidTimeRegex}))|{MidTimeRegex})\b
+  references: [ EngTimeRegex, HourNumRegex, BaseDateTime.HourRegex, MidTimeRegex ]
+DateNumberConnectorRegex: !simpleRegex
+  def: ^\s*(?<connector>\s+at)\s*$
 UnitMap: !dictionary
   types: [ string, string ]
   entries:

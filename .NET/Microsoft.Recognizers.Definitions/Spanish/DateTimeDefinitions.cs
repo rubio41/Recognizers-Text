@@ -152,6 +152,10 @@ namespace Microsoft.Recognizers.Definitions.Spanish
 		public const string WeekWithWeekDayRangeRegex = @"^[.]";
 		public const string GeneralEndingRegex = @"^[.]";
 		public const string MiddlePauseRegex = @"^[.]";
+		public const string PrefixArticleRegex = @"^[\.]";
+		public const string NumberAsTimeRegex = @"^[.]";
+		public const string TimeBeforeAfterRegex = @"^[.]";
+		public const string DateNumberConnectorRegex = @"^[.]";
 		public const string AgoRegex = @"\b(antes)\b";
 		public const string LaterRegex = @"\b(despu[eé]s|desde ahora)\b";
 		public const string Tomorrow = "mañana";
@@ -412,6 +416,7 @@ namespace Microsoft.Recognizers.Definitions.Spanish
 		public const string RestOfDateTimeRegex = @"^[\.]";
 		public const string SetWeekDayRegex = @"^[\.]";
 		public const string NightRegex = @"\b(medionoche|noche)\b";
+		public const string CommonDatePrefixRegex = @"^[\.]";
 		public const string DurationUnitRegex = @"^[\.]";
 		public const string DurationConnectorRegex = @"^[.]";
 	}
